@@ -1,2 +1,2 @@
 # x86_asm_programs
-Simple programs written in x86 assembly language.
+Simple programs for university purpouses written in x86 assembly language.
