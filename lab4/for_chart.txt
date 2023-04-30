@@ -1,0 +1,6 @@
+liczba elementów	dodawanie	odejmowanie	mnożenie	dzielenie
+2048	1.167	1.1704	1.15	1.1612
+4096	2.3257	2.3118	2.956	2.4266
+8192	4.651	4.6166	4.6431	4.7134
+
+
