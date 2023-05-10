@@ -1,11 +1,10 @@
 #include <fstream>
 #include <string.h>
-#include <chrono>
 #include <random>
-#include <time.h>
 #include <math.h>
+#include <chrono>
 
-// 128-bit structure: 64-bit per variable
+
 struct Vector
 {
     float x3;
@@ -17,87 +16,75 @@ struct Vector
 
 void addition(Vector v1, Vector v2) 
 {
-    Vector v3;
+    Vector res;
 
     asm(
-        "movups %[v1], %%xmm0\n\t"
-        "movups %[v2], %%xmm1\n\t"
-        "addps %%xmm1, %%xmm0\n\t"
-        "movups %%xmm0, %[v3]\n\t"
-        : [v3] "=rm" (v3)
-        : [v1] "rm" (v1), [v2] "rm" (v2)
+        "movups %[v1], %%xmm0;"
+        "movups %[v2], %%xmm1;"
+        "addps %%xmm1, %%xmm0;"
+        "movups %%xmm0, %[res];"
+        : [res] "=rm" (res)
+        : [v1] "irm" (v1), [v2] "irm" (v2)
     );
 }
 
 
 void subtraction(Vector v1, Vector v2)
 {
-    Vector v3;
+    Vector res;
 
     asm(
-        "movups %[v1], %%xmm0\n\t"
-        "movups %[v2], %%xmm1\n\t"
-        "subps %%xmm1, %%xmm0\n\t"
-        "movups %%xmm0, %[v3]\n\t"
-        : [v3] "=rm" (v3)
-        : [v1] "rm" (v1), [v2] "rm" (v2)
+        "movups %[v1], %%xmm0;"
+        "movups %[v2], %%xmm1;"
+        "subps %%xmm1, %%xmm0;"
+        "movups %%xmm0, %[res];"
+        : [res] "=rm" (res)
+        : [v1] "irm" (v1), [v2] "irm" (v2)
     );
 }
 
 
 void multiplication(Vector v1, Vector v2)
 {
-    Vector v3;
+   Vector res;
 
     asm(
-        "movups %[v1], %%xmm0\n\t"
-        "movups %[v2], %%xmm1\n\t"
-        "mulps %%xmm1, %%xmm0\n\t"
-        "movups %%xmm0, %[v3]\n\t"
-        : [v3] "=rm" (v3)
-        : [v1] "rm" (v1), [v2] "rm" (v2)
+        "movups %[v1], %%xmm0;"
+        "movups %[v2], %%xmm1;"
+        "mulps %%xmm1, %%xmm0;"
+        "movups %%xmm0, %[res];"
+        : [res] "=rm" (res)
+        : [v1] "irm" (v1), [v2] "irm" (v2)
     );
 }
 
 
 void division(Vector v1, Vector v2)
 {
-    Vector v3;
+    Vector res;
 
     asm(
-        "movups %[v1], %%xmm0\n\t"
-        "movups %[v2], %%xmm1\n\t"
-        "divps %%xmm1, %%xmm0\n\t"
-        "movups %%xmm0, %[v3]\n\t"
-        : [v3] "=rm" (v3)
-        : [v1] "rm" (v1), [v2] "rm" (v2)
+        "movups %[v1], %%xmm0;"
+        "divps %[v2], %%xmm1;"
+        "divps %%xmm1, %%xmm0;"
+        "movups %%xmm0, %[res];"
+        : [res] "=rm" (res)
+        : [v1] "irm" (v1), [v2] "irm" (v2)
     );
 }
 
 
 typedef void (*function)(Vector, Vector);
 
-double get_single_time(function f, Vector v1, Vector v2)
-{
-    clock_t start, stop;
-
-    start = clock();
-    f(v1, v2);
-    stop = clock();
-
-    // result in nanoseconds
-    return ((double)stop-start) / CLOCKS_PER_SEC * pow(10, 3);
-}
-
-
 double get_execution_time(function f, Vector numbers1[], Vector numbers2[], int num_of_numbers)
 {
-    double duration = 0;
-    
+    auto start = std::chrono::high_resolution_clock::now();
     for (int i = 0; i < num_of_numbers; ++i)
-        duration += get_single_time(f, numbers1[i], numbers2[i]);
-   
-    return duration;
+        f(numbers1[i], numbers2[i]);
+    auto stop = std::chrono::high_resolution_clock::now();
+
+    // result in nanoseconds
+    return std::chrono::duration_cast<std::chrono::microseconds>(stop - start).count();
 }
 
 
@@ -155,7 +142,7 @@ std::string generate_output(int num_of_numbers, int repetitions, float lower_bou
     std::string output = "";
     output += "Typ obliczen: SIMD\n";
     output += "Liczba liczb: " + std::to_string(num_of_numbers) + "\n";
-    output += "Sredni czas [nanosekundy]\n";
+    output += "Sredni czas [mikrosekundy]\n";
     output += "+ " + std::to_string(add) + "\n";
     output += "- " + std::to_string(sub) + "\n";
     output += "* " + std::to_string(mul) + "\n";
@@ -186,6 +173,6 @@ int main()
     file.open("SIMD_res.txt");
     file << output;
     file.close();
-
+    
     return 0;
 }
