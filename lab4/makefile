@@ -1,4 +1,4 @@
-all: main
+all: simd
 
-main: main.cpp
-	g++ -msse -o main main.cpp
+simd: simd.cpp
+	g++ -msse -o simd simd.cpp
