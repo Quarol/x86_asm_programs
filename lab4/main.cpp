@@ -240,7 +240,7 @@ double get_single_time(function f, Vector v1, Vector v2)
     // result in nanoseconds
     return std::chrono::duration_cast<std::chrono::nanoseconds>(stop - start).count();
 }
-
+//test
 double get_execution_time(function f, Vector numbers1[], Vector numbers2[], int num_of_numbers)
 {
     // counting loop approach
