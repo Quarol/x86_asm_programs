@@ -23,7 +23,7 @@ void add_SIMD(Vector v1, Vector v2)
         "addps %%xmm1, %%xmm0;"
         "movups %%xmm0, %[res];"
         : [res] "=rm" (res)
-        : [v1] "irm" (v1), [v2] "irm" (v2)
+        : [v1] "rm" (v1), [v2] "rm" (v2)
     );
 }
 
@@ -38,7 +38,7 @@ void sub_SIMD(Vector v1, Vector v2)
         "subps %%xmm1, %%xmm0;"
         "movups %%xmm0, %[res];"
         : [res] "=rm" (res)
-        : [v1] "irm" (v1), [v2] "irm" (v2)
+        : [v1] "rm" (v1), [v2] "rm" (v2)
     );
 }
 
@@ -53,7 +53,7 @@ void mul_SIMD(Vector v1, Vector v2)
         "mulps %%xmm1, %%xmm0;"
         "movups %%xmm0, %[res];"
         : [res] "=rm" (res)
-        : [v1] "irm" (v1), [v2] "irm" (v2)
+        : [v1] "rm" (v1), [v2] "rm" (v2)
     );
 }
 
@@ -68,7 +68,7 @@ void div_SIMD(Vector v1, Vector v2)
         "divps %%xmm1, %%xmm0;"
         "movups %%xmm0, %[res];"
         : [res] "=rm" (res)
-        : [v1] "irm" (v1), [v2] "irm" (v2)
+        : [v1] "rm" (v1), [v2] "rm" (v2)
     );
 }
 
