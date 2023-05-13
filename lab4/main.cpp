@@ -146,19 +146,6 @@ double get_single_time(function<T> f, T v1, T v2)
 template <typename T>
 double get_execution_time(function<T> f, T numbers1[], T numbers2[], int num_of_numbers)
 {
-    // counting loop approach
-    /*
-    auto start = std::chrono::high_resolution_clock::now();
-    for (int i = 0; i < num_of_numbers; ++i)
-        f(numbers1[i], numbers2[i]);
-    auto stop = std::chrono::high_resolution_clock::now();
-
-    // result in nanoseconds
-    return std::chrono::duration_cast<std::chrono::nanoseconds>(stop - start).count();
-    */
-
-    
-    // without counting loop approach
     double time = 0.0;
     for (int i = 0; i < num_of_numbers; ++i)
         time += get_single_time(f, numbers1[i], numbers2[i]);
@@ -263,7 +250,6 @@ std::string generate_output_SISD(int num_of_elements1, int num_of_elements2, int
     int elements[3] = {num_of_elements3 / 2, num_of_elements2 / 2, num_of_elements1 / 2};
     int nums_in_array;
     float add, sub, mul, div;
-
 
     std::string output = "---------------------------------------------\n";
     for (int i = 0; i < 3; ++i)
