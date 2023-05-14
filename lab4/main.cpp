@@ -139,7 +139,7 @@ double get_single_time(function<T> f, T v1, T v2)
     auto stop = std::chrono::high_resolution_clock::now();
 
     // result in nanoseconds
-    return std::chrono::duration_cast<std::chrono::nanoseconds>(stop - start).count();
+    return (double) std::chrono::duration_cast<std::chrono::nanoseconds>(stop - start).count();
 }
 
 
