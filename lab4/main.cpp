@@ -129,7 +129,7 @@ void div_SISD(float num1, float num2)
 }
 
 template <typename T>
-using function =  void(*)(T, T);
+using function = void(*)(T, T);
 
 template <typename T>
 double get_single_time(function<T> f, T v1, T v2)
@@ -213,13 +213,13 @@ std::string generate_output_SIMD(int num_of_elements1, int num_of_elements2, int
 				 int repetitions, Vector v1[], Vector v2[])
 {
     float add, sub, mul, div;
-    int elements[3] = {num_of_elements3 / 2, num_of_elements2 / 2, num_of_elements1 / 2};
+    int elements[3] = {num_of_elements3, num_of_elements2, num_of_elements1};
     int nums_in_array;
 
     std::string output = "---------------------------------------------\n";
     for (int i = 0; i < 3; ++i)
     {
-	nums_in_array = elements[i] / 4;
+	nums_in_array = elements[i] / 4 / 2;
 
         add = get_average_time(add_SIMD, v1, v2, nums_in_array, repetitions);
         sub = get_average_time(sub_SIMD, v1, v2, nums_in_array, repetitions);
@@ -247,14 +247,14 @@ std::string generate_output_SISD(int num_of_elements1, int num_of_elements2, int
                                  int repetitions, float numbers1[], float numbers2[])
 {
     float addSimd, subSimd, mulSimd, divSimd;
-    int elements[3] = {num_of_elements3 / 2, num_of_elements2 / 2, num_of_elements1 / 2};
+    int elements[3] = {num_of_elements3, num_of_elements2, num_of_elements1};
     int nums_in_array;
     float add, sub, mul, div;
 
     std::string output = "---------------------------------------------\n";
     for (int i = 0; i < 3; ++i)
     {
-        nums_in_array = elements[i];
+        nums_in_array = elements[i] / 2;
 
         add = get_average_time(add_SISD, numbers1, numbers2, nums_in_array, repetitions);
         sub = get_average_time(sub_SISD, numbers1, numbers2, nums_in_array, repetitions);
